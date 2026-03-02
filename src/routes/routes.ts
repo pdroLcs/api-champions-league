@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { deletePlayer, getPlayer, getPlayerById, postPlayer, updatePlayer } from "../controllers/players-controller";
-import { getClubById, getClubs, postClub, updateClub } from "../controllers/clubs-controller";
+import { deleteClub, getClubById, getClubs, postClub, updateClub } from "../controllers/clubs-controller";
 
 export const router = Router()
 
@@ -22,3 +22,5 @@ router.get("/clubs/:id", getClubById)
 router.post("/clubs", postClub)
 
 router.patch("/clubs/:id", updateClub)
+
+router.delete("/clubs/:id", deleteClub)

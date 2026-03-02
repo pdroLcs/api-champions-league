@@ -22,7 +22,7 @@ export const insertClub = async (club: ClubModel) => {
         id: Number(club.id),
         name: club.name
     })
-    await fs.writeFile("./src/data/clubs.json", JSON.stringify(clubs), "utf-8")
+    await fs.writeFile("./src/data/clubs.json", JSON.stringify(clubs), "utf-8") 
 }
 
 export const findAndModifyClub = async (id: number, club: ClubModel) => {
@@ -34,4 +34,15 @@ export const findAndModifyClub = async (id: number, club: ClubModel) => {
     }
     await fs.writeFile("./src/data/clubs.json", JSON.stringify(clubs), "utf-8")
     return clubs[index]
+}
+
+export const deleteClub = async (id: number) => {
+    const clubs = await getClubs()
+    const index = clubs.findIndex(club => club.id === id)
+    if (index !== -1) {
+        clubs.splice(index, 1)
+        await fs.writeFile("./src/data/clubs.json", JSON.stringify(clubs), "utf-8")
+        return true
+    }
+    return false
 }
