@@ -15,3 +15,12 @@ export const findClubById = async (id: number): Promise<ClubModel | undefined> =
     const clubs = await getClubs()
     return clubs.find(club => club.id === id)
 }
+
+export const insertClub = async (club: ClubModel) => {
+    const clubs = await getClubs()
+    clubs.push({
+        id: Number(club.id),
+        name: club.name
+    })
+    await fs.writeFile("./src/data/clubs.json", JSON.stringify(clubs), "utf-8")
+}
