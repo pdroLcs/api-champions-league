@@ -1,5 +1,5 @@
 import { ClubModel } from "../models/club-model"
-import { findAllClubs, findClubById, insertClub } from "../repositories/clubs-repository"
+import { findAllClubs, findAndModifyClub, findClubById, insertClub } from "../repositories/clubs-repository"
 import { badRequest, created, noContent, ok } from "../utils/http-helper"
 
 export const getClubService = async () => {
@@ -18,4 +18,10 @@ export const createClubService = async (club: ClubModel) => {
     if (!club) return await badRequest()
     await insertClub(club)
     return await created()
+}
+
+export const updateClubService = async (id: number, club: ClubModel) => {
+    const data = await findAndModifyClub(id, club)
+    const response = data ? await ok(data) : await badRequest()
+    return response
 }
