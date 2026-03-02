@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { deletePlayer, getPlayer, getPlayerById, postPlayer, updatePlayer } from "../controllers/players-controller";
-import { getClubs } from "../controllers/clubs-controller";
+import { getClubById, getClubs } from "../controllers/clubs-controller";
 
 export const router = Router()
 
@@ -17,3 +17,4 @@ router.delete("/players/:id", deletePlayer)
 
 //Clubs
 router.get("/clubs", getClubs)
+router.get("/clubs/:id", getClubById)
