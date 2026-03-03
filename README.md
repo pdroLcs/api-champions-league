@@ -50,7 +50,7 @@ O servidor inicia em `http://localhost:3000` por padrão.
 ```
 src/
 ├── controllers/      # Lógica de requisição e resposta
-├── data/             # Lista dos 36 clubes da fase de grupos
+├── data/             # Lista dos 36 clubes da fase de grupos e dos 20 jogadores
 ├── models/           # Tipagem de dados
 ├── repositories/     # Acesso aos dados
 ├── routes/           # Definição de rotas
@@ -130,6 +130,37 @@ DELETE /api/players/:id
 **Listar todos os clubes**
 ```
 GET /api/clubs
+```
+
+**Buscar clubes por id**
+```
+GET /api/clubs/:id
+```
+
+**Criar novo clube
+```
+POST /api/clubs
+Content-Type: application/json
+
+{
+  "id":"37",
+  "name":"Time Futebol Club"
+}
+```
+
+**Atualizar o nome de um time**
+```
+PATCH /api/clubs/:id
+Content-Type: application/json
+
+{
+  "name": "Time Alterado"
+}
+```
+
+**Deletar time**
+```
+DELETE /api/clubs/:id
 ```
 
 ## Resposta padrão
