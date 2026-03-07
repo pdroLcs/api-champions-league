@@ -1,48 +1,44 @@
-import { PlayerModel } from "../models/player-model"
-import { StatisticsModel } from "../models/statistics-model"
-import { getDataFromJson, writeJsonFile } from "../utils/io-helper"
+import { prisma } from "../lib/prisma"
 
-const playersJsonPath = "./src/data/players.json"
-
-export const findAllPlayers = async (): Promise<PlayerModel[]> => {
-    return await getDataFromJson(playersJsonPath)
+export const findAllPlayers = async () => {
+    return await prisma.player.findMany({include: {statistics: true, club: true}})
 }
 
-export const findPlayerById = async (id: number): Promise<PlayerModel | undefined> => {
-    const players: PlayerModel[] = await getDataFromJson(playersJsonPath)
-    return players.find(player => player.id === id)
+export const findPlayerById = async (id: number) => {
+    const player = await prisma.player.findUnique({where: {id}, include: {statistics: true}})
+    return player
 }
 
-export const insertPlayer = async (player: PlayerModel) => {
-    const players = await getDataFromJson(playersJsonPath)
-    players.push({
-        ...player,
-        id: Number(player.id)
+export const insertPlayer = async (data: any) => {
+    const { statistics, ...playerData } = data
+    await prisma.player.create({
+        data: {
+            ...playerData,
+            statistics: {
+                create: statistics
+            }
+        },
+        include: {statistics: true}
     })
-    await writeJsonFile(playersJsonPath, players)
 }
 
 export const deleteOnePlayer = async (id: number) => {
-    const players: PlayerModel[] = await getDataFromJson(playersJsonPath)
-    const index = players.findIndex(player => player.id === id)
-
-    if (index !== -1) {
-        players.splice(index, 1)
-        await writeJsonFile(playersJsonPath, players)
-        return true
-    } 
-    return false
+    try {
+        const deleted = await prisma.player.delete({where: {id}, include: {statistics: true}})
+        return deleted
+    } catch (err) {
+        return null
+    }
 }
 
-export const findAndModifyPlayer = async (id: number, statistics: StatisticsModel) => {
-    const players: PlayerModel[] = await getDataFromJson(playersJsonPath)
-    const index = players.findIndex(player => player.id === id)
-    if (index !== -1) {
-        players[index].statistics = {
-            ...players[index].statistics,
-            ...statistics
-        }
-        await writeJsonFile(playersJsonPath, players)
+export const findAndModifyPlayer = async (id: number, statistics: any) => {
+    try {
+       const updated = await prisma.statistics.update({
+        data: statistics,
+        where: {playerId: id}
+       })
+       return updated
+    } catch (error) {
+        return null
     }
-    return players[index]
 }

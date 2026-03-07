@@ -1,3 +1,4 @@
+import { Player } from "../../generated/prisma/client"
 import { PlayerModel } from "../models/player-model"
 import { StatisticsModel } from "../models/statistics-model"
 import { deleteOnePlayer, findAllPlayers, findAndModifyPlayer, findPlayerById, insertPlayer } from "../repositories/players-repository"
@@ -15,10 +16,10 @@ export const getPlayerByIdService = async (id: number) => {
     return response
 }
 
-export const createPlayerService = async (player: PlayerModel) => {
+export const createPlayerService = async (player: Player) => {
     if (!player) return await badRequest()
     await insertPlayer(player)
-    return await created()
+    return await created(player)
 }
 
 export const deletePlayerService = async (id: number) => {

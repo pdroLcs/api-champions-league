@@ -1,9 +1,11 @@
 export interface StatisticsModel {
-    Overall: number,
-    Pace: number,
-    Shooting: number,
-    Passing: number,
-    Dribbling: number,
-    Defending: number,
-    Physical: number
+    id: number
+    overall: number,
+    pace: number,
+    shooting: number,
+    passing: number,
+    dribbling: number,
+    defending: number,
+    physical: number
+    playerId: number
 }

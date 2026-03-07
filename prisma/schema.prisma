@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Club {
+  id Int @id @default(autoincrement())
+  name String @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  player Player[]
+}
+
+model Player {
+  id Int @id @default(autoincrement())
+  name String
+  nationality String
+  position String
+  clubId Int
+  club Club @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  statistics Statistics?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Statistics {
+  id Int @id @default(autoincrement())
+  overall Int
+  pace Int
+  shooting Int
+  passing Int
+  dribbling Int
+  defending Int
+  physical Int
+  playerId Int @unique
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
