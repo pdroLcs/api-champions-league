@@ -17,7 +17,7 @@ export const getClubByIdService = async (id: number) => {
 export const createClubService = async (club: ClubModel) => {
     if (!club) return await badRequest()
     await insertClub(club)
-    return await created()
+    return await created(club)
 }
 
 export const updateClubService = async (id: number, club: ClubModel) => {

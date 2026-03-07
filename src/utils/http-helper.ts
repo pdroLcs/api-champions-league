@@ -21,11 +21,12 @@ export const badRequest = async (): Promise<HttpResponse> => {
     }
 }
 
-export const created = async (): Promise<HttpResponse> => {
+export const created = async (data: any): Promise<HttpResponse> => {
     return {
         statusCode: 201,
         body: {
-            message: "Successful"
+            message: "Successful",
+            data
         }
     }
 }
